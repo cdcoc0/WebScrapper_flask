@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 app = Flask("Flask_Scrapper")
 
@@ -6,6 +6,11 @@ app = Flask("Flask_Scrapper")
 @app.route("/")
 def home():
   return render_template("index.html")
+
+@app.route("/report")
+def report():
+  word = request.args.get('word')
+  return render_template("report.html", keyword=word)
 
 #직접 html코드 사용 가능
 # def home():
