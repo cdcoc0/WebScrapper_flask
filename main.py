@@ -4,6 +4,7 @@ from so import get_jobs as get_so_jobs
 
 app = Flask("Flask_Scrapper")
 
+db = {}
 
 @app.route("/")
 def home():
@@ -14,13 +15,17 @@ def report():
   word = request.args.get('word')
   if word:
     word = word.lower()
-    indeed_jobs = get_indeed_jobs(word)
-    so_jobs = get_so_jobs(word)
-    jobs = indeed_jobs + so_jobs
-    print(jobs)
+    fromDb = db.get(word)
+    if fromDb:
+      jobs = fromDb
+    else:
+      indeed_jobs = get_indeed_jobs(word)
+      so_jobs = get_so_jobs(word)
+      jobs = indeed_jobs + so_jobs
+      db[word] = jobs
   #else
     #return redirect("/")
-  return render_template("report.html", keyword=word)
+  return render_template("report.html", keyword=word, cntResults=len(jobs))
 
 #직접 html코드 사용 가능
 # def home():
