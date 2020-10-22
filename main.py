@@ -1,4 +1,6 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
+from indeed import get_jobs as get_indeed_jobs
+from so import get_jobs as get_so_jobs
 
 app = Flask("Flask_Scrapper")
 
@@ -10,6 +12,14 @@ def home():
 @app.route("/report")
 def report():
   word = request.args.get('word')
+  if word:
+    word = word.lower()
+    indeed_jobs = get_indeed_jobs(word)
+    so_jobs = get_so_jobs(word)
+    jobs = indeed_jobs + so_jobs
+    print(jobs)
+  #else
+    #return redirect("/")
   return render_template("report.html", keyword=word)
 
 #직접 html코드 사용 가능
