@@ -15,9 +15,9 @@ def report():
   word = request.args.get('word')
   if word:
     word = word.lower()
-    fromDb = db.get(word)
-    if fromDb:
-      jobs = fromDb
+    existingJobs = db.get(word)
+    if existingJobs:
+      jobs = existingJobs
     else:
       indeed_jobs = get_indeed_jobs(word)
       so_jobs = get_so_jobs(word)
@@ -25,7 +25,7 @@ def report():
       db[word] = jobs
   #else
     #return redirect("/")
-  return render_template("report.html", keyword=word, cntResults=len(jobs))
+  return render_template("report.html", keyword=word, cntResults=len(jobs), jobs = jobs)
 
 #직접 html코드 사용 가능
 # def home():

@@ -40,22 +40,20 @@ def extract_job(html):
   company = html.find("span", {"class": "company"})
   
   if company is not None:
-    company_anchor = company.find("a")
-  else:
-    company_anchor = "blank"
-
-  if company_anchor is not None:
-    company = str(company_anchor)
+    company = company.find("a")
   else:
     company = "blank"
+
+  if company is not None and company != "blank":
+    company = company.string
+  
   #python strip
   #양쪽 끝에 있는 space를 없앰..?
 
   #위의 작업을 했음에도... company가 nonetype인 경우가 존재해 불가피하게 none인 경우는 그냥 blank 출력하게 함
   if company is not None:
     company = company.strip()
-  else:
-    company = "blank"
+
   location = html.find("div", {"class": "recJobLoc"})["data-rc-loc"]
   job_id = html["data-jk"]
   return {'title':  title, 'company': company, 'location': location, "link": f"https://www.indeed.com/viewjob?jk={job_id}"}
