@@ -4,9 +4,13 @@ from bs4 import BeautifulSoup
 def get_last_pages(url):
   result = requests.get(url)
   soup = BeautifulSoup(result.text, "html.parser")
-  pages = soup.find("div", {"class": "s-pagination"}).find_all("a")
-  last_page = pages[-3].get_text(strip=True)
-  return int(last_page)
+  pages = soup.find("div", {"class": "s-pagination"})
+  if pages:
+    pages = pages.find_all("a")
+    last_page = pages[-3].get_text(strip=True)
+    return int(last_page)
+  else:
+    return 1
 
 
 def extract_job(html):
